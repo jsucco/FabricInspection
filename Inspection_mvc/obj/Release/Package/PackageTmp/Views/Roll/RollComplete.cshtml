@@ -1,0 +1,87 @@
+﻿@Model Models.RollCompleteViewModel
+@{
+    ViewBag.Title = "RollComplete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="jumbotron">
+     <div style="position:absolute; left:110px; top:80px;">
+         <button id="back" type="button" class="animatedButton" onclick="@("window.location.href='" + @Url.Action("DefectEntry", "Roll", new { JobId = Model.JobId, shift = Model.WeaverShiftId }) + "'")" style="margin-top:20%; color:white; height:70px; background-color:#4e9bda;">Back</button>
+     </div>
+     <div style="position:absolute; width:100%; margin-top:50px;">
+         @using (Html.BeginForm("RollComplete", "Roll"))
+         {
+             <div class="inputs" style="position:absolute; width:90%; left:30px; margin-bottom:110px;">
+                 @{int i = 0; string display = "block"; string width = "";}
+                 @if (Model != null && Model.inputs != null)
+                 {
+                     foreach (var item in Model.inputs)
+                     {
+                         if (item.InputType == "SELECT")
+                         {
+                             if (item.input.hidden == true)
+                             {
+                                 display = "none";
+                             }
+                             if (item.input.width != null && item.input.width.Length > 0)
+                             {
+                                 width = "width: " + item.input.width + " !important;";
+                             }
+                            <div id="div_@item.input.id" style="margin-top:20px; display: @display;" margin-bottom:20px;">
+                                <select class="input" id="@item.input.id" style="@width" name="@("[" + i + "].value")">
+                                    @if (item.input.value.Trim().Length == 0)
+                                    {
+                                        <option value="" disabled selected>@item.placeHolder</option>
+                                    }
+                                    @foreach (var option in @item.input.options)
+                                    {
+                                        if (item.input.value == option.value)
+                                        {
+                                            <option selected value="@option.value">@option.text</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@option.value">@option.text</option>
+                                        }
+
+                                    }
+                                </select>
+                                    <input type="hidden" name="@("[" + i + "].id")" value="@item.input.id" />
+                            </div>
+                        }
+                        else
+                        {
+                            <input type="text" class="input" id="@item.input.id" style="width:@item.input.width !important;" placeholder="@item.placeHolder" name="@("[" + i + "].value")" />
+                            <input type="hidden" value="@item.input.id" name="@("[" + i + "].id")" />
+                        }
+                        if (item.errorFlag == true)
+                        {
+                            <label style="color:rgba(243, 49, 49, 0.92); font-size:large; font-style: italic; margin-top:20px;">@item.errorMessage</label>
+                        }
+                        { i++; }
+                    }
+                 }
+                 <button id="PostSubmit" class="animatedButton" style="position:relative; float:right; margin-top:20px; right:90px; height:100px; background-color:#9a9898; color:white;" type="submit">Submit and <br /> Complete Roll</button>
+             </div>
+            <input type="hidden" value="JobId" name="@("[" + i + "].id")" />
+            <input type="hidden" value="@Model.JobId" name="@("[" + i + "].value")" />
+            { i = i + 1; }
+            <input type="hidden" value="WeaverShiftId" name="@("[" + i + "].id")" />
+            <input type="hidden" value="@Model.WeaverShiftId" name="@("[" + i + "].value")" />
+         }
+     </div>
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    $(function () {
+        $(".jumbotron").css("height", ($(".inputs").height() + 200) + "px");
+        $("#YardsInspected").focus();
+    });
+    $(document).keyup(function (e) {
+        if (e.which == 13) {
+            $("#PostSubmit").trigger('click');
+        }
+        if (e.which == 8) {
+            $("#back").trigger('click'); 
+        }
+    });
+</script>

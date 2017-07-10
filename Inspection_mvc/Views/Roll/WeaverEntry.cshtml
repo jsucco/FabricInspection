@@ -1,0 +1,81 @@
+﻿@Model Models.WeaverEntryViewModel
+@{
+    ViewBag.Title = "WeaverEntry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    option { 
+        height: 80px !important;
+        padding: 5px !important;
+    }
+</style>
+<div class="jumbotron">
+    <div style="position:absolute; z-index:1000; left: 30px; top:80px;">
+        <button id="back" type="button" class="animatedButton" style="margin-top:20%; color:white; height:70px; background-color:#4e9bda;">Back</button>
+    </div> 
+
+    @using (Html.BeginForm("WeaverEntry", "Roll"))
+    {
+        <div class="inputs" style="position:absolute; left:30px; top:80px; margin-top:60px; margin-bottom:110px;">
+            @{ int i = 0;}
+            @if (Model != null && Model.inputs != null)
+            {
+                foreach (var item in Model.inputs)
+                {
+                    <div style="margin-top:20px; margin-bottom:20px;">
+                        <select class="input" id="@item.input.id" name="@("[" + i + "].value")">
+                            <option value="" disabled selected>@item.placeHolder</option>
+                            @foreach (var option in @item.input.options)
+                            {
+                                <option value="@option.value">@option.text</option>
+                            }
+                        </select>
+                        <input type="hidden" name="@("[" + i + "].id")" value="@item.input.id" />
+                    </div>
+                    i++;
+                }
+                if (@Model.inputs[0].errorFlag == true)
+                {
+                    <label style="color:rgba(243, 49, 49, 0.92); font-size:large; font-style: italic; margin-top:20px;">@Model.inputs[0].errorMessage</label>
+                }
+                if (Model.RequiredInputs != null)
+                {
+                    foreach (var item in Model.RequiredInputs)
+                    {
+                        <input type="hidden" name="@("[" + i + "].value")" value="@item.value" />
+                        <input type="hidden" name="@("[" + i + "].id")" value="@item.id" />
+                        i++;
+                    }
+                }
+                <input type="hidden" name="@("[" + i + "].value")" value="@Model.JobId" />
+                <input type="hidden" name="@("[" + i +"].id")" value="JobId" />
+            }
+                   
+            <button id="SubmitWeaver" class="animatedButton" style="position:relative; float:right; top:60px; height:100px; color:white; background-color:#9a9898; right:-20px;" type="submit">Submit And <br /> Start Inspection</button>
+        </div>
+    }
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    $(function () {
+        $(".jumbotron").css("height", ($(".inputs").height() + 200) + "px");
+
+        $("#back").click(function (e) {
+            var JobId = "@Model.JobId";
+            var LastWeaverShiftId = "@Model.LastWeaverShiftId";
+            console.log(JobId, LastWeaverShiftId);
+            if (JobId == "0" || LastWeaverShiftId == "0") {
+                window.location.href = 'InfoEntry';
+            } else {
+                var url = '@Url.Action("EndShift", "Roll", new { JobId = Model.JobId, weaverShiftId = Model.LastWeaverShiftId })';
+                
+                window.location.href = 'EndShift?JobId=' + @Model.JobId + '&weaverShiftId=' + @Model.LastWeaverShiftId;
+            }
+        });
+    });
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            $("#SubmitWeaver").trigger('click');
+        }
+    });
+</script>

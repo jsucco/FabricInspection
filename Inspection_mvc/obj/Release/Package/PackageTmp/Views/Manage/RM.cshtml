@@ -1,0 +1,113 @@
+﻿
+@{
+    ViewBag.Title = "RM";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>RM</h2>
+
+<div class="jumbotron">
+    <div id="tablediv" style="width:95%; position:relative;">
+        <table id="records"></table>
+        <div id="Pager"></div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqgrid")
+@*@Styles.Render("~/Content/jqgrid")*@
+<link href="http://cdn.wijmo.com/themes/arctic/jquery-wijmo.css" rel="stylesheet" type="text/css" />
+<link href="http://cdn.wijmo.com/jquery.wijmo-pro.all.3.20141.34.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+
+<style>
+    .ui-jqgrid .ui-jqgrid-htable th div {
+        overflow: hidden;
+        position: relative;
+        height: 37px;
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .ui-jqgrid tr.jqgrow {
+        outline-style: none;
+        height: 45px;
+        font-size: 15px;
+    }
+</style>
+
+<script type="text/javascript"> 
+    var rowsPerPage = new Number(12);
+    var Data = @Html.Raw(Json.Encode(Model.records)); 
+
+    $(function() { 
+        grid.Init(); 
+        console.log(Data);
+    });
+
+    var grid = { 
+        SelectedId: 0, 
+        PageNumber: 1,
+        Init: function() { 
+            $("#records").jqGrid({ 
+                datatype: 'local',  
+                editurl: "/Manage/editRMs", 
+                colNames: ["actions", "Id", "RMin", "RMout", "IDThread", "IDThreadColor", "YardCoefficient"],
+                colModel: [
+                    { name: 'edit', index: 'edit', hidden: false, width: 90, formatter: 'actions', formatoptions : { onError:function(rowid, jqXHR, textStatus) {
+                    }, actions: { delbutton:true, editbutton: true, keys: false}} },
+                    { name: 'Id', index: 'Id', editable: true, sorttype: "int", width: 80 },
+                    { name: 'RMin', index: 'RMin', editable: true, width: 140 },
+                    { name: 'RMout', index: 'RMout', editable: true, width: 140 },
+                    { name: 'IDThread', index: 'IDThread', editable: true, edittype: 'select', editoptions: {value: "1:Yes; 0:No;"}, width: 100 },
+                    { name: 'IDThreadColor', index: 'IDThreadColor', editable: true, width: 100}, 
+                    { name: 'YardCoefficient', index: 'YardCoefficient', editable: true, width: 50}
+                ],
+                loadonce: true,
+                data: Data,
+                mtype:'GET',
+                multiselect: false,
+                caption: "RM Manager",
+                autowidth: false,
+                rowNum: rowsPerPage,
+                height: '100%',
+                width: $("#tablediv").width(),
+                shrinkToFit: true,
+                pager: "#Pager",
+                gridComplete: function () {
+                    gridPaging = false; 
+                },
+                postData: { 
+                    TableId: grid.SelectedId
+                },
+                onSelectRow: function (rowid, iCol, cellcontent, e) { 
+                    console.log(rowid); 
+                    var rowNumber = new Number(rowid);  
+                    var TableIndex = rowNumber + rowsPerPage * (grid.PageNumber - 1) - 1; 
+                    grid.SelectedId = Data[TableIndex].Id;
+                }, 
+                onPaging: function (e) {
+                    if (e == "next_Pager") {
+                        grid.PageNumber++; 
+                    } else if (e == "prev_Pager") {
+                        grid.PageNumber--; 
+                    }
+                    grid.cachePageInfo(); 
+                }
+            });
+            $("#records").jqGrid('navGrid', "#Pager", 
+                {
+                    edit: true, 
+                    add:true, 
+                    del: true
+                });
+        }, 
+        cachePageInfo: function () { 
+            $.ajax({
+                url: "/Manage/cachePageInfo",
+                type: "GET", 
+                data: {page: grid.PageNumber, viewRows: rowsPerPage, table: "RM"}
+                
+            });
+        }
+    };
+</script>

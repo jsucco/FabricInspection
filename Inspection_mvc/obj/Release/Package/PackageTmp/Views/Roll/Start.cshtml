@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="jumbotron" style="margin: 0px auto 0px auto; text-align: center;">
+    <button id="Start" type="button" class="animatedButton" onclick="@("window.location.href='" + @Url.Action("InfoEntry", "Roll") + "'");" style="margin-top:20%; background-color:darkgray; width:270px; height:120px; color:white;">Start <br /> New Roll</button>
+    <br /><label style="font-size:10px;">[ENTER]</label>
+</div>
+@Scripts.Render("~/bundles/jquery")
+
+<style type="text/css">
+    .button {
+        outline: none;
+        height: 120px;
+        width: 270px;
+        color: white;
+        font-weight: 800;
+        border-radius: 10px;
+        box-shadow: 0 9px #999;
+    }
+
+        .button:hover {
+            background-color: #3e8e41;
+        }
+
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+</style>
+<script type="text/javascript">
+
+    $(function () {
+        $(".jumbotron").css("height", (screen.height - 250) + "px");
+    });
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            $("#Start").trigger('click');
+        }
+    });
+</script>
+

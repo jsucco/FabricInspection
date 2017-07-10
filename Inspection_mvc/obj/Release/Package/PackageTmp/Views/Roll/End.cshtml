@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "End";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .animatedButton{
+    font-family: Arial, sans-serif;
+    text-decoration: none !important;
+    background-color:#a30e12;
+    padding-left: 40px;
+    padding-right: 40px;
+    height: 38px;
+    line-height: 38px !important;
+    display: inline-block;
+    border: 1px solid #450003;
+    text-shadow:0px 1px 1px #000;
+    -webkit-box-shadow: inset 0px 1px 1px #fff, 0 1px 0px 0px #000;
+    -moz-box-shadow: inset 0px 1px 1px #fff, 0 1px 0px 0px #000;
+    box-shadow: inset 0px 1px 1px #fff, 0 1px 0px 0px #000;
+    outline:none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    font-size: 35px;
+    }
+</style>
+<div class="jumbotron">
+    <div style="position:absolute; margin-top:50px; left:30px; top:20px;">
+        <button type="button" class="animatedButton"  onclick="@("window.location.href='" + @Url.Action("RollComplete", "Roll", new { JobId = Model.JobId, WeaverShiftId = Model.LastWeaverShiftId }) + "'");" style="margin-top:20%; height:70px; color:white; background-color:#4e9bda;">Back</button>
+    </div>
+    @using (Html.BeginForm("End", "Roll"))
+    {
+        <div>
+            <div style="margin-top:120px;text-align:left;margin-left:25%;">
+                <h1>By clicking "Confirm", you are<br />verifying that you completed this<br />inspection with the highest possible<br /> accuracy.</h1>
+            </div>
+        </div>
+
+       <input type="hidden" name="ThreadColorConfirm" value="@Model.threadconfirm.value" />
+
+        <div style="margin-top:120px;text-align:right;margin-right:50px;">
+            <button id="confirm" type="submit" class="animatedButton" style="position:relative; right:50px; width:200px; color:white; background-color:#9a9898; height:50px;">Confirm</button>
+        </div>
+        <input type="hidden" value="@Model.JobId" name="JobId" />
+        <input type="hidden" value="@Model.Comments" name="Comments" />
+    }
+    
+</div>
+<script type="text/javascript">
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            $("#confirm").trigger('click');
+        }
+    });
+</script>
+
+

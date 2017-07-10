@@ -1,0 +1,59 @@
+﻿@Model Models.ShiftYardsViewModel
+@{
+    ViewBag.Title = "EndShift";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css"> 
+
+</style>
+<div class="jumbotron">
+    <div style="position:absolute; left:110px; top:80px;">
+        <button type="button" class="animatedButton" onclick="@("window.location.href='" + @Url.Action("DefectEntry", "Roll", new { JobId = Model.JobId, shift= Model.WeaverShiftId }) + "'")" style="margin-top:20%; color:white; height:70px; background-color:#4e9bda;">Back</button>
+    </div>
+    <div style="position:absolute; width:100%; margin-top:50px;">
+        @{ int i = 0;}
+         @using (Html.BeginForm("EndShift", "Roll"))
+         {
+            
+            <div class="inputs" style="position:absolute; width:90%; left:30px; margin-bottom:110px;">
+                
+                @if (Model != null && Model.inputs != null)
+                {
+                    foreach (var item in Model.inputs)
+                    {
+                        <input type="text" class="input" id="@item.input.id" style="width:@item.input.width !important;" placeholder="@item.placeHolder" name="@("[" + i + "].value")" />
+                        <input type="hidden" value="@item.input.id" name="@("[" + i + "].id")" />
+                        if (item.errorFlag == true)
+                        {
+                            <label style="color:rgba(243, 49, 49, 0.92); font-size:large; font-style: italic; margin-top:20px;">@item.errorMessage</label>
+                        }
+                        i++;
+                    }
+                }
+
+                <button id="PostSubmit" class="animatedButton" style="position:relative; float:right; margin-top:20px; right:90px; height:100px; background-color:#9a9898; color:white;" type="submit">Submit and <br /> Next Weaver(s)</button>
+            </div>
+
+            <input type="hidden" value="JobId" name="@("[" + i + "].id")" />
+            <input type="hidden" value="@Model.JobId" name="@("[" + i + "].value")" />
+                { i = i + 1; }
+            <input type="hidden" value="WeaverShiftId" name="@("[" + i + "].id")" />
+            <input type="hidden" value="@Model.WeaverShiftId" name="@("[" + i + "].value")" />
+        }
+     
+    </div>
+    
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+    $(function () {
+        $(".jumbotron").css("height", ($(".inputs").height() + 200) + "px");
+        $("#YardsInspected").focus();
+    });
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            $("#PostSubmit").trigger('click');
+        }
+    });
+</script>
+

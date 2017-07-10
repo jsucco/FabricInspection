@@ -1,0 +1,10 @@
+C:\Users\johns\Dropbox (Standard Textile)\APR_Publish\Inspection_mvc\LoadConversions\LoadConversions\bin\Debug\LoadConversions.exe.config
+C:\Users\johns\Dropbox (Standard Textile)\APR_Publish\Inspection_mvc\LoadConversions\LoadConversions\bin\Debug\LoadConversions.exe
+C:\Users\johns\Dropbox (Standard Textile)\APR_Publish\Inspection_mvc\LoadConversions\LoadConversions\bin\Debug\LoadConversions.pdb
+C:\Users\johns\Dropbox (Standard Textile)\APR_Publish\Inspection_mvc\LoadConversions\LoadConversions\obj\Debug\LoadConversions.csprojResolveAssemblyReference.cache
+C:\Users\johns\Dropbox (Standard Textile)\APR_Publish\Inspection_mvc\LoadConversions\LoadConversions\obj\Debug\LoadConversions.exe
+C:\Users\johns\Dropbox (Standard Textile)\APR_Publish\Inspection_mvc\LoadConversions\LoadConversions\obj\Debug\LoadConversions.pdb
+C:\Users\johns\Dropbox (Standard Textile)\APR_Publish\Inspection_mvc\LoadConversions\LoadConversions\bin\Debug\EntityFramework.dll
+C:\Users\johns\Dropbox (Standard Textile)\APR_Publish\Inspection_mvc\LoadConversions\LoadConversions\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\johns\Dropbox (Standard Textile)\APR_Publish\Inspection_mvc\LoadConversions\LoadConversions\bin\Debug\EntityFramework.xml
+C:\Users\johns\Dropbox (Standard Textile)\APR_Publish\Inspection_mvc\LoadConversions\LoadConversions\bin\Debug\EntityFramework.SqlServer.xml

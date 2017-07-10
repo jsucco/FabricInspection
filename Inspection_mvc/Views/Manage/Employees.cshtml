@@ -1,0 +1,128 @@
+﻿@Model Models.EmployeeViewModel
+@{
+    ViewBag.Title = "Employees";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Employees</h2>
+<h4>@ViewBag.Message</h4>
+
+<div class="jumbotron">
+     <div id="tablediv" style="width:95%; position:relative;">
+         <table id="employeeTable"></table>
+         <div id="employeePager"></div>
+     </div>
+</div>
+@Scripts.Render("~/bundles/jqgrid")
+@*@Styles.Render("~/Content/jqgrid")*@
+<link href="http://cdn.wijmo.com/themes/arctic/jquery-wijmo.css" rel="stylesheet" type="text/css" />
+<link href="http://cdn.wijmo.com/jquery.wijmo-pro.all.3.20141.34.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/ui.jqgrid.css" rel="stylesheet" type="text/css" />
+
+<style>
+    .ui-jqgrid .ui-jqgrid-htable th div {
+        overflow: hidden;
+        position: relative;
+        height: 37px;
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .ui-jqgrid tr.jqgrow {
+        outline-style: none;
+        height: 45px;
+        font-size: 15px;
+    }
+</style>
+<script type="text/javascript">
+    var gridPaging = false;
+    var rowsPerPage = new Number(12); 
+    var Data = @Html.Raw(Json.Encode(Model.employees));
+    var gridData = @Html.Raw(Json.Encode(Model.gridObj));
+    console.log(gridData); 
+    console.log(Data); 
+
+    $(function() { 
+        grid.Init();
+        //grid.Load(Data); 
+
+    });
+    
+
+    var grid = {
+        Init: function () {
+            $("#employeeTable").jqGrid({
+                datatype: 'json',
+                url: "/Manage/getEmployeesData",
+                editurl: "/Manage/EditEmployee",
+                colNames: ["actions","Id", "FirstName", "LastName", "Initials", "Type"],
+                colModel: [
+                    { name: 'edit', index: 'edit', hidden: false, width: 90, formatter: 'actions', formatoptions : { onError:function(rowid, jqXHR, textStatus) {
+                    }, actions: { delbutton:true, editbutton: true, keys: false}} },
+                    { name: 'Id', index: 'Id', sorttype: "int", width: 80 },
+                    { name: 'FirstName', index: 'FirstName', editable: true, width: 140 },
+                    { name: 'LastName', index: 'LastName', editable: true, width: 140 },
+                    { name: 'Initials', index: 'Initials', editable: true, width: 100 },
+                    { name: 'Type', index: 'Type', editable: false, width: 100}
+                ],
+                loadonce: true,
+                data: Data,
+                mtype:'GET',
+                multiselect: false,
+                caption: "Employee Manager",
+                autowidth: false,
+                rowNum: rowsPerPage,
+                height: '100%',
+                width: $("#tablediv").width(),
+                shrinkToFit: true,
+                pager: "#employeePager",
+                gridComplete: function () {
+                    gridPaging = false; 
+                },
+                postData: { 
+                    TableId: grid.SelectedEmployeeId
+                },
+                onCellSelect: function (rowid, iCol, cellcontent, e) { 
+             
+                    var rowNumber = new Number(rowid);  
+                    var TableIndex = rowNumber + rowsPerPage * (grid.PageNumber - 1) - 1; 
+                    grid.SelectedEmployeeId = Data[TableIndex].Id;
+
+                }, 
+                onPaging: function (e) {
+                    if (e == "next_employeePager") {
+                        grid.PageNumber++; 
+                    } else if (e == "prev_employeePager") {
+                        grid.PageNumber--; 
+                    }
+                    grid.cachePageInfo(); 
+                }
+            });
+            $("#employeeTable").jqGrid('navGrid', "#employeePager", 
+                {
+                    edit: true, 
+                    add:true, 
+                    del: true
+                });
+
+            },
+        Load: function (data) { 
+            if (data !=null) { 
+                for (var i=0; i<=data.length;i++)
+                    $("#employeeTable").jqGrid('addRowData', i + 1, data[i]); 
+            }
+            $("#tablediv").css('height', ($("#gbox_employeeTable").height() + 100) + "px");
+        },
+        cachePageInfo: function () { 
+            $.ajax({
+                url: "/Manage/cachePageInfo",
+                type: "GET", 
+                data: {page: grid.PageNumber, viewRows: rowsPerPage, table: "Employee"}
+                
+            });
+        }, 
+        PageNumber: 1, 
+        SelectedEmployeeId: 0
+    };
+</script>

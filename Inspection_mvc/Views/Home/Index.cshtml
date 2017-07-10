@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Inspection</h1>
+    <p class="lead">The Inspection Web application is used for standard textile product inspection for defects and specifications tracking.</p>
+    @using (Html.BeginForm("FabricReport", "Home"))
+    {
+        <button type="submit" class="animatedButton" style="background-color:gray">DATA AUTOMATIONS REPORTS</button>
+    }
+    <div style="position:relative; margin-top: 25px;">
+        <button type="button" onclick="location.href='@Url.Action("Start", "Roll")';return false;" class="animatedButton" style="background-color:gray;" >START ROLL</button> 
+    </div>
+    <div style="position:relative; margin-top: 25px;">
+        <button type="button" onclick="location.href='@Url.Action("RM", "Manage")';return false;" class="animatedButton" style="background-color:gray;">RM MANAGER</button>
+    </div>
+</div>
+
+<div class="row">
+   
+</div>

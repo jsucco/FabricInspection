@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inspection_mvc", "Inspection_mvc\Inspection_mvc.csproj", "{384A4000-818C-4241-8A5F-BF02B5361172}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inspection_mvc.Tests", "Inspection_mvc.Tests\Inspection_mvc.Tests.csproj", "{BE884475-2C64-4BA4-A1D1-DB624560737D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{384A4000-818C-4241-8A5F-BF02B5361172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{384A4000-818C-4241-8A5F-BF02B5361172}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{384A4000-818C-4241-8A5F-BF02B5361172}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{384A4000-818C-4241-8A5F-BF02B5361172}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE884475-2C64-4BA4-A1D1-DB624560737D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE884475-2C64-4BA4-A1D1-DB624560737D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE884475-2C64-4BA4-A1D1-DB624560737D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE884475-2C64-4BA4-A1D1-DB624560737D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
