@@ -19,16 +19,18 @@ namespace Inspection_mvc.Helpers
         public Dictionary<string, RollRM_Xref> getRMDictionary()
         {
             Dictionary<string, RollRM_Xref> chart = new Dictionary<string, RollRM_Xref>();
-            List<RollRM_Xref> cachedList = new List<RollRM_Xref>(); 
+            List<RollRM_Xref> cachedList = new List<RollRM_Xref>();
 
             var cacheData = HttpContext.Current.Cache["Inspection.RollRM_Xref"];
 
-            try {
-                if (cacheData != null)
-                    cachedList = (List<RollRM_Xref>)cacheData; 
-            } catch (Exception ex)
+            try
             {
-                cachedList = null; 
+                if (cacheData != null)
+                    cachedList = (List<RollRM_Xref>)cacheData;
+            }
+            catch (Exception ex)
+            {
+                cachedList = null;
             }
 
             if (cachedList == null || cachedList.Count == 0)
@@ -38,7 +40,11 @@ namespace Inspection_mvc.Helpers
                     var dbChart = (from x in context.RollRM_Xref select x).ToList();
 
                     foreach (var item in dbChart)
-                        chart.Add(item.RMin.Trim().ToUpper(), item);
+                    {
+                        if (!chart.ContainsKey(item.RMin.Trim().ToUpper()))
+                            chart.Add(item.RMin.Trim().ToUpper(), item);
+                    }
+                        
 
                     if (chart.Count > 0)
                         HttpContext.Current.Cache.Insert("Inspection.RollRM_Xref", dbChart, null, DateTime.Now.AddDays(5), System.Web.Caching.Cache.NoSlidingExpiration);
@@ -76,12 +82,12 @@ namespace Inspection_mvc.Helpers
         {
             List<RollRM_Xref> rmtable = null;
 
-            
             try
             {
                 var cacheData = HttpContext.Current.Cache["Inspection.RollRM_Xref"];
                 rmtable = (List<RollRM_Xref>)cacheData;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 rmtable = null;
             }
@@ -90,6 +96,7 @@ namespace Inspection_mvc.Helpers
             {
                 try
                 {
+                    context.Configuration.LazyLoadingEnabled = false; 
                     rmtable = (from x in context.RollRM_Xref select x).ToList();
 
                     if (rmtable != null && rmtable.Count > 0)
@@ -116,8 +123,27 @@ namespace Inspection_mvc.Helpers
 
             if (data.IDThread == true && data.IDThreadColor.Trim().Length == 0)
                 throw new Exception("Thread Color must be chosen.");
+
+            if (checkRMExists(data))
+                throw new Exception("RMin field already exists in the table."); 
+
             Task.Run(() => addRMasync(data)); 
             return true; 
+        }
+
+        private bool checkRMExists(Models.RMCrud data)
+        {
+            try
+            {
+                var count = (from x in context.RollRM_Xref where x.RMin == data.RMin.Trim() select x).Count();
+
+                if (count > 0)
+                    return true; 
+            } catch (Exception ex)
+            {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex); 
+            }
+            return false; 
         }
 
         private void addRMasync(Models.RMCrud data)
@@ -198,7 +224,8 @@ namespace Inspection_mvc.Helpers
 
             if (data.Id == 0)
                 throw new Exception("RM record id cannot be zero.");
-            Task.Run(() => deleteRMasync(data));
+            //Task.Run(() => deleteRMasync(data));
+            deleteRMasync(data);
             return true; 
         }
 

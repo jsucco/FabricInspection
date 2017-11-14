@@ -129,7 +129,7 @@ namespace Inspection_mvc.Controllers
         }
 
         [HttpPost]
-        public JsonResult editRMs()
+        public ActionResult editRMs()
         {
             System.Collections.Specialized.NameValueCollection RequestParams = ControllerContext.RequestContext.HttpContext.Request.Params;
 
@@ -144,27 +144,26 @@ namespace Inspection_mvc.Controllers
                     return Json(updated, JsonRequestBehavior.AllowGet);
 
                 Helpers.InspectionService service = new Helpers.InspectionService();
-
-                switch (crudVars.oper)
-                {
-                    case "edit":
-                        updated = service.updateRM(crudVars);                       
-                        break;
-                    case "add":
-                        updated = service.addRM(crudVars);                      
-                        break;
-                    case "del":
-                        updated = service.deleteRM(crudVars); 
-                        break;
-                }
                 try
                 {
-                    if (updated)
-                        HttpContext.Cache.Remove("Inspection.RollRM_Xref");
+                    switch (crudVars.oper)
+                    {
+                        case "edit":
+                            updated = service.updateRM(crudVars);                       
+                            break;
+                        case "add":
+                            updated = service.addRM(crudVars);                      
+                            break;
+                        case "del":
+                            updated = service.deleteRM(crudVars); 
+                            break;
+                    }             
+                    
+                    HttpContext.Cache.Remove("Inspection.RollRM_Xref");
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    return Json(ex.Message, JsonRequestBehavior.AllowGet); 
                 }
             }
 

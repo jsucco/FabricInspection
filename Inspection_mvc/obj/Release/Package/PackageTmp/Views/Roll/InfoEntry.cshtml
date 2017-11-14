@@ -82,7 +82,7 @@
         $(".jumbotron").css("height", (screen.height + 250) + "px");
         $("#LoomNumber").focus();
         var rmtable = @Html.Raw(Json.Encode(Model.rmtable));
-
+        
         $("#RM_XrefId").select2({
             placeholder: "What is the RMNumber?"
         }); 
@@ -90,11 +90,12 @@
         var refColor = ""; 
         $("#RM_XrefId").change(function (a) {
             var val = a.target.value.trim(); 
-            console.log(a); 
+            console.log("selected Val", val); 
             $.each(rmtable, function(key, value) { 
                 if (value.Id == val) { 
                     refColor = value.IDThreadColor.trim(); 
                     $("#RMNumber").val(value.RMout);
+                    $("#RMholder").val(value.RMin); 
                     switch(value.IDThread) { 
                         case true: 
                             $("#div_IDThreadColor").css("display", "block"); 

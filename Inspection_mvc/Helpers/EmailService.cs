@@ -68,6 +68,23 @@ namespace Inspection_mvc.Helpers
             client.UseDefaultCredentials = false;
             client.Send(message); 
         }
+
+        public string[] GetRollUsers()
+        {
+            Models.EF.AprManager context = new Models.EF.AprManager(); 
+
+            if (context != null)
+            {
+                try
+                {
+                    return (from x in context.EmailMasters where x.ROLLINS_ALERT_EMAIL == true select x.Address).ToArray();
+                } catch (Exception ex)
+                {
+                    Elmah.ErrorSignal.FromCurrentContext().Raise(ex); 
+                }
+            }
+            return new string[]{ };
+        }
     }
     public class Email
     {

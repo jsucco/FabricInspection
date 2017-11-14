@@ -115,7 +115,7 @@ namespace Inspection_mvc.Models.EF
 
         public decimal? CasePackConv { get; set; }
 
-        [StringLength(10)]
+        [StringLength(40)]
         public string WorkRoom { get; set; }
 
         public int? InspectionJobSummaryId { get; set; }

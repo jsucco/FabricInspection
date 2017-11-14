@@ -91,7 +91,7 @@ namespace Inspection_mvc.Models.EF
         [StringLength(50)]
         public string CasePack { get; set; }
 
-        [StringLength(10)]
+        [StringLength(40)]
         public string WorkRoom { get; set; }
 
         public int? RM_XrefId { get; set; }

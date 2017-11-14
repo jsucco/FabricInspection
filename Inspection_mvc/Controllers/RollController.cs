@@ -34,7 +34,7 @@ namespace Inspection_mvc.Controllers
             if (PageInput == null || PageInput.Count == 0)
                 throw new Exception("Server did not received view inputs.");
 
-            if (PageInput.Count != 5)
+            if (PageInput.Count != 6)
                 throw new Exception("Server recieved an incorect amount of view inputs.");
 
             Helpers.InspectionJob job = new Helpers.InspectionJob(PageInput, new Helpers.InspectionJob.Type { fabric = true });
@@ -63,11 +63,11 @@ namespace Inspection_mvc.Controllers
             else if (job.currentJob.RM_XrefId > 0)
             {
                 InspectionService service = new InspectionService();
-                Dictionary<string, Models.EF.RollRM_Xref> xrefs = service.getRMDictionary(); 
-
-                if (xrefs.ContainsKey(job.currentJob.DataNo))
+                Dictionary<string, Models.EF.RollRM_Xref> xrefs = service.getRMDictionary();
+ 
+                if (xrefs.ContainsKey(job.currentJob.PRP_Code))
                 {
-                    if (xrefs[job.currentJob.DataNo].IDThread == true && job.currentJob.ThreadColor.Trim().Length == 0)
+                    if (xrefs[job.currentJob.PRP_Code].IDThread == true && job.currentJob.ThreadColor.Trim().Length == 0)
                     {
                         model.rmtable = service.getRMTable(); 
                         model.inputs = getInfoEntryPageInputs(model, job.currentJob.JobNumber, job.currentJob.RM_XrefId.ToString(), job.currentJob.RollWidth.ToString(), job.currentJob.ThreadColor);
@@ -77,6 +77,7 @@ namespace Inspection_mvc.Controllers
                         return View(model); 
                     } 
                 }
+                job.currentJob.PRP_Code = ""; 
             } else if (job.currentJob.RollWidth == null || job.currentJob.RollWidth == 0)
             {
                 InspectionService service = new InspectionService();
@@ -697,7 +698,11 @@ namespace Inspection_mvc.Controllers
 
             Helpers.PageInput hiddenRM = new PageInput("default", "RMIN", "RMNumber", "RMNumber", "");
             hiddenRM.input.inputtype = "hidden";
-            newInputs.Add(hiddenRM); 
+            newInputs.Add(hiddenRM);
+
+            Helpers.PageInput hiddenRMin = new PageInput("default", "RMholder", "RMholder", "RMholder", "");
+            hiddenRMin.input.inputtype = "hidden";
+            newInputs.Add(hiddenRMin);
 
             return newInputs;
         }

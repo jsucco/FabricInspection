@@ -54,11 +54,11 @@
                 colNames: ["actions", "Id", "RMin", "RMout", "IDThread", "IDThreadColor", "YardCoefficient"],
                 colModel: [
                     { name: 'edit', index: 'edit', hidden: false, width: 90, formatter: 'actions', formatoptions : { onError:function(rowid, jqXHR, textStatus) {
-                    }, actions: { delbutton:true, editbutton: true, keys: false}} },
+                    }, actions: { delbutton:false, editbutton: true, keys: false}} },
                     { name: 'Id', index: 'Id', editable: true, sorttype: "int", width: 80 },
                     { name: 'RMin', index: 'RMin', editable: true, width: 140 },
                     { name: 'RMout', index: 'RMout', editable: true, width: 140 },
-                    { name: 'IDThread', index: 'IDThread', editable: true, edittype: 'select', editoptions: {value: "1:Yes; 0:No;"}, width: 100 },
+                    { name: 'IDThread', index: 'IDThread', editable: true, edittype: 'select', editoptions: {value: "true:Yes; false:No"}, width: 100 },
                     { name: 'IDThreadColor', index: 'IDThreadColor', editable: true, width: 100}, 
                     { name: 'YardCoefficient', index: 'YardCoefficient', editable: true, width: 50}
                 ],
@@ -98,7 +98,7 @@
                 {
                     edit: true, 
                     add:true, 
-                    del: true
+                    del: false
                 });
         }, 
         cachePageInfo: function () { 

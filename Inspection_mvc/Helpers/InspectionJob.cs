@@ -78,6 +78,7 @@ namespace Inspection_mvc.Helpers
                 if (item.Name.ToUpper() == "FABRIC" && FieldVal == true)
                 {
                     mappedFields.Add("RMNUMBER", "DataNo");
+                    mappedFields.Add("RMHOLDER", "PRP_Code");
                     mappedFields.Add("RM_XREFID", "RM_XrefId");
                     mappedFields.Add("IDTHREADCOLOR", "ThreadColor");
                     mappedFields.Add("ROLLWIDTH", "RollWidth");       
@@ -262,13 +263,14 @@ namespace Inspection_mvc.Helpers
 
         private void sendAlertEmail(InspectionJobSummary job)
         {
-            List<string> destinations = new List<string>();
-            destinations.Add("jsucco@standardtextile.com");
-            destinations.Add("aheiman@standardtextile.com");
-            destinations.Add("tbopp@standardtextile.com");
-            destinations.Add("njohnson@standardtextile.com"); 
+            Helpers.EmailService emailservice = new Helpers.EmailService();
+            //List<string> destinations = new List<string>();
+            //destinations.Add("jsucco@standardtextile.com");
+            //destinations.Add("aheiman@standardtextile.com");
+            //destinations.Add("tbopp@standardtextile.com");
+            //destinations.Add("njohnson@standardtextile.com"); 
+            string[] destinations = emailservice.GetRollUsers(); 
 
-            Helpers.EmailService emailservice = new Helpers.EmailService(); 
             Helpers.InspectionService service = new Helpers.InspectionService();
 
             if (job.id == 0)

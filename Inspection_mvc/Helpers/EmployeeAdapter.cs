@@ -52,7 +52,10 @@ namespace Inspection_mvc.Helpers
             using (AprSTTcontext _db = new AprSTTcontext())
             {
                 _db.Configuration.ProxyCreationEnabled = false;
-                var query = from x in _db.OE_Operators where x.OEOP_Active == true && x.OEOP_JobCode == "61257A" orderby x.OEOP_Operator ascending select x;
+                var query = from x in _db.OE_Operators
+                            where x.OEOP_Active == true && x.OEOP_JobCode == "61257A"
+                            orderby x.OEOP_Operator ascending
+                            select x;
 
                 employees = await query.ToListAsync();
             }

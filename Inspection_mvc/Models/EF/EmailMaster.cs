@@ -25,6 +25,8 @@ namespace Inspection_mvc.Models.EF
 
         public bool? INS_ALERT_EMAIL { get; set; }
 
+        public bool? ROLLINS_ALERT_EMAIL { get; set; }
+
         public bool? SPEC_ALERT_EMAIL { get; set; }
 
         [StringLength(50)]
